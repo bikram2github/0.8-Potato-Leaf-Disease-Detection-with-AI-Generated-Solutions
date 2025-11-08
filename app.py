@@ -1,11 +1,21 @@
 import streamlit as st
 import numpy as np
 import tensorflow as tf
-from keras.models import load_model
 from PIL import Image
 import time
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_groq import ChatGroq
+from langchain_core.output_parsers import StrOutputParser
+from dotenv import load_dotenv
+import os
 
+load_dotenv() 
 
+api_key = os.getenv("GROQ_API_KEY")
+llm = ChatGroq(api_key=api_key,
+                    model="openai/gpt-oss-20b",
+                    temperature=0.7,
+                )
 
 @st.cache_resource
 def load_tflite_model():
@@ -59,10 +69,31 @@ if uploaded_file is not None:
         output_data = interpreter.get_tensor(output_index)
 
         predicted_class = np.argmax(output_data, axis=1)[0]
+        disease_name = class_names[predicted_class]
         confidence = float(np.max(output_data))
         st.subheader("📊 Class Probabilities ⬇️")
         for name, prob in zip(class_names, output_data[0]):
             st.write(f"{name}: {prob*100:.2f}%")
             st.progress(float(prob))
 
-    st.success(f"Prediction: {class_names[predicted_class]} (Confidence: {confidence:.2f})")
+    st.subheader(f"Prediction: {class_names[predicted_class]} (Confidence: {confidence:.2f})")
+
+
+
+    if st.button("🌱 Get Disease Information & Treatment Suggestions"):
+        if disease_name == "Healthy":
+            st.success("The potato leaf is healthy. No disease detected.")
+            st.balloons()
+        else:
+            with st.spinner("Extracting information..."):
+                prompt = ChatPromptTemplate.from_template(
+                    "The potato leaf is diagnosed with {disease_name}. "
+                    "Provide a brief description of the disease and suggest treatment options."
+                )
+
+                parser = StrOutputParser()               
+                chain=prompt | llm | parser
+
+                response = chain.invoke({"disease_name": disease_name})
+                st.subheader("🌿 Disease Information & Treatment Suggestions")
+                st.write(response)
