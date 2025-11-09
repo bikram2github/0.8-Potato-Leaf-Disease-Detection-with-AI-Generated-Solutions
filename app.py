@@ -32,8 +32,7 @@ st.warning("""
 Always consult an **agriculture expert** for professional guidance.
 """)
 
-
-st.title("🥔 Potato Leaf Disease Detection")
+st.title("🥔 Potato Leaf Disease Detection with AI-Generated Solutions")
 st.write("Upload an image of a potato leaf to detect diseases.")
 uploaded_file = st.file_uploader("📤 Choose an image...", type=["jpg", "jpeg", "png"])
 
@@ -55,7 +54,7 @@ def preprocess_image(image):
 
 if uploaded_file is not None:
     image = Image.open(uploaded_file).convert("RGB")
-    st.image(image, caption='Uploaded Leaf Image', use_container_width=True)
+    st.image(image, caption='Uploaded Leaf Image', width='content')
 
     with st.spinner('🧠 Analyzing the image...'):
         time.sleep(1)  # Simulate processing time
@@ -76,7 +75,10 @@ if uploaded_file is not None:
             st.write(f"{name}: {prob*100:.2f}%")
             st.progress(float(prob))
 
-    st.subheader(f"Prediction: {class_names[predicted_class]} (Confidence: {confidence:.2f})")
+    st.subheader(f"✅ Prediction: {class_names[predicted_class]}")     
+    st.divider() 
+    space = st.empty()
+    space.write("")
 
 
 
@@ -86,9 +88,16 @@ if uploaded_file is not None:
             st.balloons()
         else:
             with st.spinner("Extracting information..."):
-                prompt = ChatPromptTemplate.from_template(
-                    "The potato leaf is diagnosed with {disease_name}. "
-                    "Provide a brief description of the disease and suggest treatment options."
+                prompt = ChatPromptTemplate.from_messages(
+                    [
+                        ("system","You are an agricultural AI assistant specializing in potato leaf diseases. "
+                            "Given the disease name, provide a clear, well-structured explanation that includes: "
+                            "1. Cause, 2. Symptoms, and 3. Treatment or prevention methods. "
+                            "Keep the language simple and easy to understand for farmers or students. "
+                            "Write the answer attractively with short paragraphs and bullet points where suitable, "
+                            "and keep the response within 300 words."),
+                        ("user","The potato leaf is diagnosed with {disease_name}.")
+                    ]
                 )
 
                 parser = StrOutputParser()               
