@@ -1,5 +1,15 @@
 streamlit
 tensorflow
-pillow
+Pillow
 numpy
-matplotlib
+python-dotenv
+langchain
+langchain-core
+langchain-community
+langchain-groq
+langchain-huggingface
+langchain-classic
+sentence-transformers
+faiss
+tqdm
+requests
