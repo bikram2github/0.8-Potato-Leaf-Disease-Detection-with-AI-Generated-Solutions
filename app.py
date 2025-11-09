@@ -9,9 +9,8 @@ from langchain_core.output_parsers import StrOutputParser
 from dotenv import load_dotenv
 import os
 
-load_dotenv() 
+api_key = st.secrets["GROQ_API_KEY"]
 
-api_key = os.getenv("GROQ_API_KEY")
 llm = ChatGroq(api_key=api_key,
                     model="openai/gpt-oss-20b",
                     temperature=0.7,
