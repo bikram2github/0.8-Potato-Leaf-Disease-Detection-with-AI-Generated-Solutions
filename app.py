@@ -84,7 +84,7 @@ if uploaded_file is not None:
 
     if st.button("🌱 Get Disease Information & Treatment Suggestions"):
         if disease_name == "Healthy":
-            st.success("The potato leaf is healthy. No disease detected.")
+            st.success("This potato leaf is healthy.")
             st.balloons()
         else:
             with st.spinner("Extracting information..."):
