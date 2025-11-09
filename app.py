@@ -6,8 +6,6 @@ import time
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_groq import ChatGroq
 from langchain_core.output_parsers import StrOutputParser
-from dotenv import load_dotenv
-import os
 
 api_key = st.secrets["GROQ_API_KEY"]
 
