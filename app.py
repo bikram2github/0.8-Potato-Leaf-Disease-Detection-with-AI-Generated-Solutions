@@ -16,7 +16,7 @@ llm = ChatGroq(api_key=api_key,
 
 @st.cache_resource
 def load_tflite_model():
-    interpreter = tf.lite.Interpreter(model_path="Models/potato_vgg_full.tflite")
+    interpreter = tf.lite.Interpreter(model_path="models/potato_vgg_full.tflite")
     interpreter.allocate_tensors()
     return interpreter
 
