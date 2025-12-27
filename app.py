@@ -16,7 +16,7 @@ llm = ChatGroq(api_key=api_key,
 
 @st.cache_resource
 def load_tflite_model():
-    interpreter = tf.lite.Interpreter(model_path="potato_disease2.tflite")
+    interpreter = tf.lite.Interpreter(model_path="Models\\potato_vgg_full.tflite")
     interpreter.allocate_tensors()
     return interpreter
 
@@ -41,7 +41,7 @@ class_names = ['Early Blight', 'Healthy', 'Late Blight']
 
 @st.cache_data
 def preprocess_image(image):
-    image = image.resize((150, 150))
+    image = image.resize((224, 224))
     image = np.array(image)
     image = np.expand_dims(image, axis=0)
     return image.astype(np.float32)
