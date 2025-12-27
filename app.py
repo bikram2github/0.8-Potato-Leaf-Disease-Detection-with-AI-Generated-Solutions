@@ -84,7 +84,8 @@ if uploaded_file is not None:
             st.success("This potato leaf is healthy.")
             st.balloons()
         else:
-            with st.spinner("Extracting information..."):
+            with st.spinner("Extracting information...",show_time=True):
+                
                 prompt = ChatPromptTemplate.from_messages(
                     [
                         ("system","You are an agricultural AI assistant specializing in potato leaf diseases. "
